@@ -20,5 +20,4 @@ NetworkClient(cacheModel:.memory)
 * Framwork
 * Unit Testing
 * Core data (concurrency)
-* caching 
 ```
