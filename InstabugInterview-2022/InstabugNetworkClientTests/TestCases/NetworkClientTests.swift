@@ -39,7 +39,7 @@ class NetworkClientTests: XCTestCase {
             guard let data = data else {fatalError("an error")}
             
             guard let decoded = try? JSONDecoder().decode(PostResponse.self, from: data) else {return}
-            XCTAssertEqual(decoded.origin,Helper.IP)
+            XCTAssertEqual(decoded.url,Helper.URL_POST.absoluteString)
         }
         waitForExpectations(timeout: 2, handler: nil)
         
