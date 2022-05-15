@@ -26,6 +26,7 @@ class NetworkClientTests: XCTestCase {
 
         sut.get(Helper.URL_GET) { data in
             exp.fulfill()
+            guard let data = data else {fatalError(Helper.CONNECTION_ISSUE)}
             XCTAssertNotNil(data)
         }
         waitForExpectations(timeout: 5, handler: nil)
@@ -36,7 +37,7 @@ class NetworkClientTests: XCTestCase {
         
         sut.post(Helper.URL_POST, payload: nil) { data in
             self.exp.fulfill()
-            guard let data = data else {fatalError("an error")}
+            guard let data = data else {fatalError(Helper.CONNECTION_ISSUE)}
             
             guard let decoded = try? JSONDecoder().decode(PostResponse.self, from: data) else {return}
             XCTAssertEqual(decoded.url,Helper.URL_POST.absoluteString)
