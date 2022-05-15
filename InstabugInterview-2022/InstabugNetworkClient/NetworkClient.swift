@@ -44,16 +44,16 @@ public class NetworkClient {
                 
                 switch httpResponse.statusCode{
                 case Constants.SUCCESS_CODE:
-                    networkClientHit = NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: httpResponse, responsePayload: data, error: nil, status: .success)
+                    networkClientHit = NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: httpResponse, responsePayload: data, error: nil, status: .Success)
                 default:
                     guard let error = error as NSError? else {return}
 
-                    networkClientHit = NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: httpResponse, responsePayload: data, error: error, status: .failure)
+                    networkClientHit = NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: httpResponse, responsePayload: data, error: error, status: .Failure)
                 }
                 
             }else{
                 let error = (error as NSError?)
-                networkClientHit = NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: nil, responsePayload: data, error: error, status: .connection)
+                networkClientHit = NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: nil, responsePayload: data, error: error, status: .ConnectionError)
             }
 
             self.manager.prepareForSave(networkData: networkClientHit) { hit in

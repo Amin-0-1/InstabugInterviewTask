@@ -19,10 +19,10 @@ struct NetworkClientHitData{
         let url = EndPoint.get.asUrl()
         
         guard let requestPayload = httpBody else {
-            return NetworkClientHitData(url: url, urlRequest: URLRequest(url: url), urlResponse: HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil), responsePayload: Data(count: 1024), error: nil, status: .success)
+            return NetworkClientHitData(url: url, urlRequest: URLRequest(url: url), urlResponse: HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil), responsePayload: Data(count: 1024), error: nil, status: .Success)
         }
         var urlRequest = URLRequest(url: url)
         urlRequest.httpBody = requestPayload
-        return NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil), responsePayload: nil, error: nil, status: .success)
+        return NetworkClientHitData(url: url, urlRequest: urlRequest, urlResponse: HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil), responsePayload: nil, error: nil, status: .Success)
     }
 }

@@ -14,7 +14,7 @@ protocol LocalDataManagerProtocol{
 
 public class ClientDataManager:LocalDataManagerProtocol{
 //    private let localDataStore:LocalDataSourceProtocol
-    private let dispatchQueue = DispatchQueue.global()
+
     private let localDataSource:CoreDataStack!
     private var recordsCount:Int
     init(local:CoreDataStack){
@@ -38,29 +38,25 @@ public class ClientDataManager:LocalDataManagerProtocol{
         
         var hit:ApiHit
         switch networkData.status{
-        case .success:
+        case .Success:
             hit = ApiHit(httpMethod: httpMethod, url: networkData.url.absoluteString, requestPayloadBody: requestPayload, status: networkData.status, responsePayload: responsePayload, code: networkData.urlResponse?.statusCode, errorDomain: nil, createdAt: Date())
-        case .failure:
+        case .Failure:
             hit = ApiHit(httpMethod: httpMethod, url: networkData.url.absoluteString, requestPayloadBody: requestPayload, status: networkData.status, responsePayload: responsePayload, code: networkData.urlResponse?.statusCode, errorDomain: networkData.error?.domain, createdAt: Date())
-        case .connection:
-            hit = ApiHit(httpMethod: httpMethod, url: networkData.url.absoluteString, requestPayloadBody: requestPayload, status: networkData.status, responsePayload: responsePayload, code: networkData.error?.code, errorDomain: nil, createdAt: Date())
+        case .ConnectionError:
+            hit = ApiHit(httpMethod: httpMethod, url: networkData.url.absoluteString, requestPayloadBody: requestPayload, status: networkData.status, responsePayload: responsePayload, code: networkData.error?.code, errorDomain: networkData.error?.domain, createdAt: Date())
         }
         
-        dispatchQueue.sync{ [weak self] in
-            guard let self = self else {return}
+
             self.localDataSource.saveNewHit(hit: hit, completion: onSaved)
             print("count, \(self.recordsCount)")
             if self.recordsCount == Constants.RECORDE_LIMIT{
                 print("limit")
                 self.removeFirstRecord {onFinished()}
             }
-        }
     }
     
     func getAllHits(completion: @escaping (Result<[ApiHit], LocalDataRetreiveError>) -> ()) {
-        dispatchQueue.async {
-            self.localDataSource.getAllHits(completion: completion)
-        }
+        self.localDataSource.getAllHits(completion: completion)
     }
     
     private func removeFirstRecord(completion:@escaping ()->() = {}){

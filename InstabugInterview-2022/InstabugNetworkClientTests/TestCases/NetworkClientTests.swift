@@ -9,11 +9,11 @@ import XCTest
 @testable import InstabugNetworkClient
 class NetworkClientTests: XCTestCase {
     
-    var sut:NetworkClient = NetworkClient(cachMethod: .memory)
+    var sut:NetworkClient!
     var exp : XCTestExpectation!
     
     override func setUpWithError() throws {
-//        sut =
+        sut =  NetworkClient(cachMethod: .memory)
     }
 
     override func tearDownWithError() throws {
@@ -28,7 +28,7 @@ class NetworkClientTests: XCTestCase {
             exp.fulfill()
             XCTAssertNotNil(data)
         }
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPostMethod(){
@@ -41,7 +41,7 @@ class NetworkClientTests: XCTestCase {
             guard let decoded = try? JSONDecoder().decode(PostResponse.self, from: data) else {return}
             XCTAssertEqual(decoded.url,Helper.URL_POST.absoluteString)
         }
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
         
     }
 }

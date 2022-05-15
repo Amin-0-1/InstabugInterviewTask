@@ -11,22 +11,22 @@ import CoreData
 extension CoreDataStack:LocalDataSourceProtocol{
     func saveNewHit(hit: ApiHit, completion:@escaping (ApiHit?) -> () = {_ in }) {
         
-        backgroundContext.performAndWait {
+        backgroundContext.perform {
 
-            let new = Hit(context: backgroundContext)
+            let new = Hit(context: self.backgroundContext)
             new.httpMethod = hit.httpMethod
             new.createdAt = hit.createdAt
             new.url = hit.url
-            new.code = hit.code as? NSDecimalNumber
+            new.code = NSDecimalNumber(decimal: Decimal(hit.code ?? Constants.ERROR_CODE))
             new.requestPayloadBody = hit.requestPayloadBody
             new.responsePayload = hit.responsePayload
             new.status = hit.status.rawValue
             new.errorDomain = hit.errorDomain
             
             do{
-                try backgroundContext.save()
-                    mainContext.perform {
-                    let apiHit = ApiHit(httpMethod: hit.httpMethod, url: hit.url, requestPayloadBody: new.requestPayloadBody, status: hit.status, responsePayload: new.responsePayload, code: hit.code, errorDomain: hit.errorDomain, createdAt: hit.createdAt)
+                try self.backgroundContext.save()
+                let apiHit = ApiHit(httpMethod: hit.httpMethod, url: hit.url, requestPayloadBody: new.requestPayloadBody, status: hit.status, responsePayload: new.responsePayload, code: hit.code, errorDomain: hit.errorDomain, createdAt: hit.createdAt)
+                self.mainContext.perform {
                     completion(apiHit)
                 }
             }catch{

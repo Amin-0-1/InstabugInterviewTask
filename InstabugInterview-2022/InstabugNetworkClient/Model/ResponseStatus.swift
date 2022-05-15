@@ -9,7 +9,7 @@ import Foundation
 
 
 enum ResponseStatus:String{
-    case success
-    case failure
-    case connection
+    case Success
+    case Failure
+    case ConnectionError
 }

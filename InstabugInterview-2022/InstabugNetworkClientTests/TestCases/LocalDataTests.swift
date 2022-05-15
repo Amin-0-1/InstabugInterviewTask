@@ -15,7 +15,7 @@ class LocalDataTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        exp = nil
+//        exp = nil
     }
 
     //MARK: Test Recording
