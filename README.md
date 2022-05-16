@@ -10,9 +10,11 @@ All you need, is just importing the module in your .swift file and you are god t
 ```
 import InstabugNetworkClient
 ```
-
 ```
 NetworkClient(cacheModel:.memory)
+```
+```
+NetworkClient(cacheModel:.physical).get(url: , completion: ){_ in}
 ```
 
 # Technologies
